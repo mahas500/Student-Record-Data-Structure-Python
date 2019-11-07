@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from random import randint
 import random
 import names
 import time
@@ -7,20 +8,18 @@ import sqlite3
 
 
 
-def get_random_digits(n, mode):
-    numbers = "1,2,3,4,5,6,7,8,9,0"
-    chars = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,U,V,W,X,Y,Z"
-    symbols = numbers if mode == "numeric" else numbers + chars
-    return ''.join([random.choice(symbols.split(',')) for j in range(n)])
+def get_random_digits(n):
+    numbers = "1,2,3,4,5,6,7,8,9"
+    return ''.join([random.choice(numbers.split(',')) for j in range(n)])
 
 
 class StudentRecord:
     def add(self, stud, new=False, record=""):
         if new:
             record = record.split(',')
-        stud_id = record[0] if new else get_random_digits(8, "numeric")
-        name = record[1] if new else names.get_first_name()
-        cc = record[2] if new else get_random_digits(7, "alpha-numeric")
+        stud_id = record[0] if new else get_random_digits(8)
+        name = record[1] if new else "Manik"+ str(stud_id)
+        cc = record[2] if new else name[2:9]
         return stud.append([stud_id, name, cc])
 
     def QuickSort(self, student_list):
@@ -49,17 +48,22 @@ class StudentCalculate:
     def main(self):
         stud1 = []
         SR = StudentRecord()
-        for i in range(10000):
 
+        for i in range(10000):
+            #if stud1[i]==stud1:
+            #    i=i+1
+            #    continue
+           # else:
             SR.add(stud1)
 
         start = time.perf_counter()
         stud1=SR.QuickSort(stud1)
+        print(stud1)
         print("Lowest Student ID record is: \n")
         print(stud1[0])
         #print(stud1[1:])
         end = time.perf_counter()
-        print(end - start)
+        print("Quicksort timing is: ",(end - start))
 
         UserIsInputing=True
 
@@ -70,11 +74,14 @@ class StudentCalculate:
                 UserIsInputing = True
                 SR.add(stud1, True, input('Enter student_id,name,Course code\n'))
 
+                start = time.perf_counter()
                 stud1=SR.InsertionSort(stud1)
                 #print("New list is: \n")
                 #print(stud1)
                 print("Lowest element in new list is: \n")
                 print(stud1[0])
+                end = time.perf_counter()
+                print("Insertion Sort timing is: ", (end - start))
 
             elif option.lower() == "no":
                 UserIsInputing = False
