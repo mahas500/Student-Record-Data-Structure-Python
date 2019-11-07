@@ -1,56 +1,73 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import random
 import names
 import time
+import sqlite3
+
+
+
+def get_random_digits(n, mode):
+    numbers = "1,2,3,4,5,6,7,8,9,0"
+    chars = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,U,V,W,X,Y,Z"
+    symbols = numbers if mode == "numeric" else numbers + chars
+    return ''.join([random.choice(symbols.split(',')) for j in range(n)])
 
 
 class StudentRecord:
-    def add(self,stud,stud_id,name,cc):
-        self.stud_id= self.get_random_digits(8, "numeric")
-        self.name=names.get_full_name()
-        self.cc=self.get_random_digits(7, "alpha-numeric")
-        stud.append(stud_id, name, cc)
+    def add(self, stud, new=False, record=""):
+        if new:
+            record = record.split(',')
+        stud_id = record[0] if new else get_random_digits(8, "numeric")
+        name = record[1] if new else names.get_first_name()
+        cc = record[2] if new else get_random_digits(7, "alpha-numeric")
+        return stud.append([stud_id, name, cc])
 
+    def retrieve(self, student_list):
+        if len(student_list) < 2:
+            return student_list
+        pivot = student_list[0]
+        lower = self.retrieve([x for x in student_list[1:] if x < pivot])
+        upper = self.retrieve([x for x in student_list[1:] if x >= pivot])
+        return lower + [pivot] + upper
 
-    def get_random_digits(n, mode):
-        numbers = "1,2,3,4,5,6,7,8,9,0"
-        chars = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,U,V,W,X,Y,Z"
-        symbols = numbers if mode == "numeric" else numbers + chars
-        return ''.join([random.choice(symbols.split(',')) for j in range(n)])
-
-
-def retrieve(student_list):
-    if len(student_list) < 2:
-        return student_list
-    pivot = student_list[0]
-    lower = retrieve([x for x in student_list[1:] if x < pivot])
-    upper = retrieve([x for x in student_list[1:] if x >= pivot])
-    return lower + [pivot] + upper
-
+    
 
 
 class StudentCalculate:
 
-
     def main(self):
         stud1 = []
-        stud_id=0
-        name=""
-        cc=0
+        SR = StudentRecord()
         for i in range(10):
-            print("testing")
-            stud1=StudentRecord.add(stud1,stud_id,name,cc)
+
+            SR.add(stud1)
 
         start = time.perf_counter()
-        print(retrieve(stud1)[0])
-        print(retrieve(stud1)[1:])
+        print(SR.retrieve(stud1)[0])
         end = time.perf_counter()
         print(end - start)
+        #print(SR.retrieve(stud1)[1:])
 
-SC=StudentCalculate()
+        option=input("Do you wish to enter more records ?..Please select Yes or No\n")
+
+
+        NewRecords=[]
+        if option.lower() == "yes":
+             NewRecords=SR.add(stud1, True, input('Enter student_id,name,Course code\n'))
+
+            
+             print(stud1)
+        else:
+            exit()
+
+
+
+
+
+
+SC = StudentCalculate()
 SC.main()
 
-#if __name__ == '__main__':
+# if __name__ == '__main__':
 #    main()
-
