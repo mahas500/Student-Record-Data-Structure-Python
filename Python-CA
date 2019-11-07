@@ -23,15 +23,25 @@ class StudentRecord:
         cc = record[2] if new else get_random_digits(7, "alpha-numeric")
         return stud.append([stud_id, name, cc])
 
-    def retrieve(self, student_list):
+    def QuickSort(self, student_list):
         if len(student_list) < 2:
             return student_list
         pivot = student_list[0]
-        lower = self.retrieve([x for x in student_list[1:] if x < pivot])
-        upper = self.retrieve([x for x in student_list[1:] if x >= pivot])
+        lower = self.QuickSort([x for x in student_list[1:] if x < pivot])
+        upper = self.QuickSort([x for x in student_list[1:] if x >= pivot])
         return lower + [pivot] + upper
 
-    
+    def InsertionSort(self,new_student_list):
+        for index in range(1, len(new_student_list)):
+            I = index
+            temp = new_student_list[I]
+            while I > 0 and temp < new_student_list[I - 1]:
+                new_student_list[I] = new_student_list[I - 1]
+                I = I - 1
+            new_student_list[I] = temp
+        return new_student_list
+
+
 
 
 class StudentCalculate:
@@ -39,31 +49,40 @@ class StudentCalculate:
     def main(self):
         stud1 = []
         SR = StudentRecord()
-        for i in range(10):
+        for i in range(10000):
 
             SR.add(stud1)
 
         start = time.perf_counter()
-        print(SR.retrieve(stud1)[0])
+        stud1=SR.QuickSort(stud1)
+        print("Lowest Student ID record is: \n")
+        print(stud1[0])
+        #print(stud1[1:])
         end = time.perf_counter()
         print(end - start)
-        #print(SR.retrieve(stud1)[1:])
 
-        option=input("Do you wish to enter more records ?..Please select Yes or No\n")
+        UserIsInputing=True
 
+        while(UserIsInputing):
+            option = input("Do you wish to enter more records ?..Please select Yes or No\n")
+            print("Length of the list is :",len(stud1))
+            if option.lower() == "yes":
+                UserIsInputing = True
+                SR.add(stud1, True, input('Enter student_id,name,Course code\n'))
 
-        NewRecords=[]
-        if option.lower() == "yes":
-             NewRecords=SR.add(stud1, True, input('Enter student_id,name,Course code\n'))
+                stud1=SR.InsertionSort(stud1)
+                #print("New list is: \n")
+                #print(stud1)
+                print("Lowest element in new list is: \n")
+                print(stud1[0])
 
-            
-             print(stud1)
-        else:
-            exit()
+            elif option.lower() == "no":
+                UserIsInputing = False
 
-
-
-
+                exit()
+            else:
+                print("Please enter a valid input of either yes or no")
+                continue
 
 
 SC = StudentCalculate()
