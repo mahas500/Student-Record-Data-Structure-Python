@@ -1,5 +1,8 @@
 #https://github.com/mahas500/Manik_CA_Python
 
+
+
+
 import random
 import time
 
@@ -13,7 +16,7 @@ class StudentRecord:
     def add(self, stud, new=False, record=""):
         if new:
             record = record.split(',')
-        stud_id = record[0] if new else get_random_digits(8)
+        stud_id = int(record[0]) if new else int(get_random_digits(8))
         name = record[1] if new else "Manik"+ str(stud_id)
         cc = record[2] if new else name[2:9]
         return stud.append([stud_id, name, cc])
@@ -43,7 +46,10 @@ class StudentCalculate:
         stud1 = []
         SR = StudentRecord()
 
-        for i in range(10000):
+        print("Enter the no. of student records you wish to enter \n")
+        n=int(input())
+
+        for i in range(n):
 
             SR.add(stud1)
 
@@ -85,5 +91,8 @@ class StudentCalculate:
 
 SC = StudentCalculate()
 SC.main()
+
+
+
 
 
