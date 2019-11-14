@@ -1,7 +1,5 @@
+
 #https://github.com/mahas500/Manik_CA_Python
-
-
-
 
 import random
 import time
@@ -21,6 +19,10 @@ class StudentRecord:
         cc = record[2] if new else name[2:9]
         return stud.append([stud_id, name, cc])
 
+#Quicksort is a good choice for large data sets hence I selected it. As I am generating random data set hence the probability is
+# very less that I will be getting a sorted list as Quicksort is having Worst time complexity of O(n**2) for sorted list. In this case
+    # time complexity will be nlogn
+
     def QuickSort(self, student_list):
         if len(student_list) < 2:
             return student_list
@@ -28,6 +30,10 @@ class StudentRecord:
         lower = self.QuickSort([x for x in student_list[1:] if x < pivot])
         upper = self.QuickSort([x for x in student_list[1:] if x >= pivot])
         return lower + [pivot] + upper
+
+#Insertion sort is a good choice now as we have a sorted list now as it will (nlogn) time complexity. Using Quicksort is not a good option here
+# as we will get max depth reached exception if data sets is having 1000 elements because recursion function of quicksort will be called 1000 times
+    # as a result we will get a stack overflow condition.
 
     def InsertionSort(self,new_student_list):
         for index in range(1, len(new_student_list)):
@@ -55,12 +61,12 @@ class StudentCalculate:
 
         start = time.perf_counter()
         stud1=SR.QuickSort(stud1)
-        print(stud1,"\n")
+       # print(stud1,"\n")
         print("Lowest Student ID record is: \n")
         print(stud1.pop(0))
-
-        print("Updated list is: \n")
-        print(stud1,"\n")
+        print("Lowest element has been removed successfully from our list \n")
+        #print("Updated list is: \n")
+       # print(stud1,"\n")
         end = time.perf_counter()
         print("Quicksort timing is: ",(end - start))
 
@@ -91,8 +97,5 @@ class StudentCalculate:
 
 SC = StudentCalculate()
 SC.main()
-
-
-
 
 
