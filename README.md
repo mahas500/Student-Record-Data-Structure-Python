@@ -11,7 +11,7 @@ You must create an appropriate data structure for use in an application, which a
 
 Please consider execution (retrieval) time, i.e. keep the records sorted.
 
-
+</ br>
 
 **Choice of sorting algorithms**
 
